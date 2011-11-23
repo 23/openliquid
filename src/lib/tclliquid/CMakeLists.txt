@@ -4,8 +4,6 @@ if (APPLE)
   set(TCL_INCLUDE "/Library/Frameworks/Tcl.framework/Versions/8.5/Headers")
 endif (APPLE)
 
-message(${TCL_INCLUDE})
-
 include_directories(
         ${PROJECT_SOURCE_DIR}/lib
         ${TCL_INCLUDE}
