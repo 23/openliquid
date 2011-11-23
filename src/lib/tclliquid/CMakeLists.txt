@@ -22,3 +22,6 @@ target_link_libraries(tclliquid
         tclstub8.5
         pcrecpp
 )
+
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/pkgIndex.tcl
+               ${CMAKE_CURRENT_BINARY_DIR}/pkgIndex.tcl COPYONLY)
