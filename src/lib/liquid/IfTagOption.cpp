@@ -40,7 +40,7 @@ namespace Liquid
              * unaryToken = NULL;
 
         ConditionalOperator conditionalOperator;
-        UnaryOperator unaryOperator;
+        UnaryOperator unaryOperator = UnaryAnd;
 
         // Evaluate the expressions
         do

@@ -247,8 +247,8 @@ namespace Liquid
     bool ForTag::TryRender(RenderContext& context)
     {
         // * Resolution of offset and limits
-        int64_t offset,
-                limit;
+        int64_t offset = 0,
+                limit = 0;
 
         if (this->_offset)
         {
