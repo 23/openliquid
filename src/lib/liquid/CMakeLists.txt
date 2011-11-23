@@ -1,0 +1,34 @@
+#include_directories(
+#        ${PROJECT_SOURCE_DIR}/lib
+#)
+
+add_library(openliquid
+        Fragment.cpp
+        Lexer.cpp
+        Strainer.cpp
+        Template.cpp
+        BranchNode.cpp
+        LiteralNode.cpp
+        IfTag.cpp
+        IfTagOption.cpp
+        Condition.cpp
+        OutputNode.cpp
+        ForTag.cpp
+        CycleTag.cpp
+        AssignTag.cpp
+        CaptureTag.cpp
+        CaseTag.cpp
+        HashFragment.cpp
+        ContextualFragment.cpp
+        ArrayFragment.cpp
+        BooleanFragment.cpp
+        DoubleFragment.cpp
+        EmptyFragment.cpp
+        IntegerFragment.cpp
+        NullFragment.cpp
+        StringFragment.cpp
+)
+
+target_link_libraries(openliquid
+        pcrecpp
+)

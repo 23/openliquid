@@ -1,0 +1,23 @@
+# Ignore temporary emacs files, that haven't been deleted
+*~
+\#*\#
+
+# Ignore any stupid OS specific files
+.DS_Store
+
+# Ignore any build related files
+CMakeCache.txt
+CMakeFiles
+Makefile
+cmake_install.cmake
+install_manifest.txt
+/bin
+/lib
+/doc
+
+# Ignore any test related files
+/Testing
+/TestLiquidExpressions
+/TestLiquidFragmentComparison
+/TestLiquidRendering
+CTest*
