@@ -24,6 +24,10 @@ To make sure that the version of the code, that you have checked out from [githu
 
     $ ctest
 
+## API documentation
+
+Most of the source code is documented using a flavor of the Doxygen documentation format and a Doxyfile is included in the source code to generate a full API documentation. The documentation can also be accessed on [the 23 Developer page](http://23developer.com/openliquid/api/). Contact [@nickbruun](http://twitter.com/nickbruun) if you have any further questions.
+
 ## License
 
 Copyright (c) 2011 - 23 Visual ApS
