@@ -1,3 +1,5 @@
+add_definitions(-fPIC)
+
 add_library(openliquid
         Fragment.cpp
         Lexer.cpp
