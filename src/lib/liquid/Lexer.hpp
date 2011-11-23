@@ -139,6 +139,7 @@ namespace Liquid
         /// @param context Lexical analysis context
         /// @param tokens Reference to list of tokens to be populated
         /// @param error Parser error to hold errors
+        /// @param wrapper Wrapping character designating the type of block
         /// @returns true if parsing succeeded, otherwise false
         static bool TryParseBlock(LexerContext& context,
                                   TokenList& tokens,

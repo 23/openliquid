@@ -30,8 +30,7 @@ namespace Liquid
 
         /// Try to parse the branch node node
 
-        /// @param tokens Tokens
-        /// @param error Parser error reference
+        /// @param context Parsing context
         /// @returns true if parsing succeeds, otherwise false
         virtual bool TryParse(ParserContext& context);
 

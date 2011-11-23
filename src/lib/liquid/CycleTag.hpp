@@ -28,6 +28,7 @@ namespace Liquid
         /// Guaranteed to have the first token be available as the name
         /// of the tag.
         /// 
+        /// @param tagToken Token representing the tag name
         /// @param context Parser context
         /// @returns a tag node if successful, otherwise NULL
         static Node* Initialize(Token* tagToken,

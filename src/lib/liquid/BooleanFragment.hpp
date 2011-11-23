@@ -65,7 +65,7 @@ namespace Liquid
         /// Compare this fragment to another fragment
         
         /// @param other Other fragment to compare to
-        /// @param comparator Comparator
+        /// @param op Comparator
         /// @returns true if the statement is true, otherwise false
         virtual bool Compare(Fragment* other,
                              ConditionalOperator op);

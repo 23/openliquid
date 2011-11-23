@@ -46,6 +46,7 @@ namespace Liquid
 
         /// @param data Root data node
         /// @param error Reference to a structure to hold the error description upon failure
+        /// @param result Reference to a string to hold the rendering output upon success
         /// @returns a string representation of the rendered template
         bool TryRender(HashFragment* data,
                        RenderError& error,
@@ -60,6 +61,7 @@ namespace Liquid
         /// A local cache will be initialized if no cache is supplied
         /// as an argument, hence only in the case of a root template.
         /// 
+        /// @param strainer Reference to a strainer, that must persist for the entire lifetime of the template
         /// @param filesystem File system to use
         /// @param cache Optional pointer to a cache instance to use for filesystem traversal
         Template(Strainer& strainer,
