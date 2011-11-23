@@ -1,4 +1,5 @@
 #include <locale>
+#include <ctime>
 
 #include "FilterBase.hpp"
 
@@ -464,6 +465,56 @@ namespace Liquid
             }
 
             return new StringFragment(result);
+        }
+
+
+        /// date(input, fmt)
+        static Fragment* Date(Fragment* input,
+                              std::vector<Fragment*>& arguments)
+        {
+            // Check for the format argument
+            if (arguments.size() == 0)
+                return new NullFragment();
+
+            // Check the input
+            time_t inputTime;
+
+            if (input->GetType() == FragmentTypeString)
+            {
+                std::string stringTime = input->ToString();
+
+                if (stringTime == "now")
+                    inputTime = time(NULL);
+                else
+                    return new NullFragment();
+            }
+            else if (input->GetType() == FragmentTypeInteger)
+                inputTime = reinterpret_cast<IntegerFragment*>(input)->GetValue();
+            else if (input->GetType() == FragmentTypeFloat)
+                inputTime = reinterpret_cast<FloatFragment*>(input)->GetValue();
+            else
+                return new NullFragment();
+
+            // Convert the input
+            struct tm inputTm;
+
+            if (localtime_r(&inputTime,
+                            &inputTm) == NULL)
+                return new NullFragment();
+
+            // Format the output
+            char outputBuffer[256];
+            std::string outputFormat = arguments[0]->ToString();
+
+            std::size_t formattedLength = strftime(outputBuffer,
+                                                   255,
+                                                   outputFormat.c_str(),
+                                                   &inputTm);
+
+            return (formattedLength == 0 ?
+                    (Fragment*)new NullFragment() :
+                    (Fragment*)new StringFragment(std::string(outputBuffer,
+                                                              formattedLength)));
         }
     }
 }

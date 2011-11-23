@@ -80,6 +80,8 @@ namespace Liquid
                                                     &StandardFilters::StripHtml));
         this->_filterHash.insert(StrainerFilterPair("escape",
                                                     &StandardFilters::Escape));
+        this->_filterHash.insert(StrainerFilterPair("date",
+                                                    &StandardFilters::Date));
     }
 
     TagInitializer Strainer::ResolveTagInitializer(std::string& name)
