@@ -469,7 +469,7 @@ int main()
     // strip_newlines
     AssertRendering("Filter: strip_newlines #1",
                     "{{ 'Hello\ngreat wonderous\\nworld' | strip_newlines }}",
-                    "Hello great wonderous world");
+                    "Hellogreat wonderousworld");
 
     // newline_to_br
     AssertRendering("Filter: newline_to_br #1",

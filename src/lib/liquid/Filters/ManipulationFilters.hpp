@@ -246,8 +246,6 @@ namespace Liquid
                 if ((current != '\n') &&
                     (current != '\r'))
                     result += current;
-                else if (current == '\n')
-                    result += " ";
             }
 
             return new StringFragment(result);
