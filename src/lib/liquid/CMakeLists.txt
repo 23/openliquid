@@ -1,7 +1,3 @@
-#include_directories(
-#        ${PROJECT_SOURCE_DIR}/lib
-#)
-
 add_library(openliquid
         Fragment.cpp
         Lexer.cpp

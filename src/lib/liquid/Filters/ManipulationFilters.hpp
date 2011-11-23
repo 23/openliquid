@@ -126,11 +126,6 @@ namespace Liquid
             if (arguments.size() > 1)
                 ending = arguments[1]->ToString();
 
-            if (characters <= ending.length())
-                return new StringFragment(ending);
-
-            characters -= ending.length();
-
             // Cut and end!
             if (characters < representation.length())
                 representation = representation.substr(0, characters) + ending;
@@ -288,11 +283,13 @@ namespace Liquid
         static Fragment* Replace(Fragment* input,
                                  std::vector<Fragment*>& arguments)
         {
-            if (arguments.size() < 2)
+            if (arguments.size() < 1)
                 return new StringFragment(input->ToString());
 
             std::string search = arguments[0]->ToString(),
-                        replace = arguments[1]->ToString(),
+                        replace = (arguments.size() > 1 ?
+                                   arguments[1]->ToString() :
+                                   ""),
                         result = input->ToString();
 
             std::size_t position;
@@ -313,11 +310,13 @@ namespace Liquid
         static Fragment* ReplaceFirst(Fragment* input,
                                       std::vector<Fragment*>& arguments)
         {
-            if (arguments.size() < 2)
+            if (arguments.size() < 1)
                 return new StringFragment(input->ToString());
 
             std::string search = arguments[0]->ToString(),
-                        replace = arguments[1]->ToString(),
+                        replace = (arguments.size() > 1 ?
+                                   arguments[1]->ToString() :
+                                   ""),
                         result = input->ToString();
 
             std::size_t position;

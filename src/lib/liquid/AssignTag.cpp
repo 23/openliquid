@@ -61,6 +61,7 @@ namespace Liquid
                     "cannot assign a value to " + token->Value);
 
         tag->_targetName = token->Value;
+        std::string targetName = token->Value;
 
         // Ensure that the next token is an assignment operator
         HandleNext();
@@ -73,7 +74,7 @@ namespace Liquid
         HandleNext();
 
         HandleError(!Fragment::IsValid(token),
-                    "cannot assign " + token->Value + " as the value of " + tag->_targetName);
+                    "cannot assign " + token->Value + " as the value of " + targetName);
 
         HandleError(token->Value == tag->_targetName,
                     "self-assignment is not allowed");

@@ -100,11 +100,11 @@ namespace Liquid
         /// @returns a reference to the stream
         friend std::ostream& operator <<(std::ostream& stream, ParserError& error)
         {
-            stream << "Error ";
+            stream << "Error";
 
             // Filename
             if (!error.Filename.empty())
-                stream << "in " << error.Filename;
+                stream << " in " << error.Filename;
             
             // Position
             if (error.LineBegin == LineCharacterNone)

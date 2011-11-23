@@ -440,13 +440,13 @@ int main()
 
     AssertRendering("Filter: truncate #1",
                     "{{ " + loremIpsum + " | truncate }}",
-                    "Now that we know who you are, I know who I am. I'm not a mistake! It all makes sense! In a comic,...");
+                    "Now that we know who you are, I know who I am. I'm not a mistake! It all makes sense! In a comic, yo...");
     AssertRendering("Filter: truncate #2",
                     "{{ " + loremIpsum + " | truncate: 50 }}",
-                    "Now that we know who you are, I know who I am. ...");
+                    "Now that we know who you are, I know who I am. I'm...");
     AssertRendering("Filter: truncate #3",
                     "{{ " + loremIpsum + " | truncate: 50, '!!!' }}",
-                    "Now that we know who you are, I know who I am. !!!");
+                    "Now that we know who you are, I know who I am. I'm!!!");
 
     // first
     AssertRendering("Filter: first #1",

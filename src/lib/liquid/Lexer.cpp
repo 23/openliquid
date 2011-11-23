@@ -181,7 +181,8 @@ namespace Liquid
             //     = ! & > < % } | : ,
 
             // Check for delimiting if we're not doing string parsing
-            if ((LexerDelimiterTable[(const unsigned char)context.Current]) &&
+            if (((LexerDelimiterTable[(const unsigned char)context.Current]) ||
+                 ((context.Current == '.') && (context.Next == '.'))) &&
                 (!stringWrapper))
             {
                 // Push the previous token
@@ -276,6 +277,22 @@ namespace Liquid
                     context++;
                     context.Mark();
                     
+                    continue;
+                }
+
+                // Range delimiter
+                if ((context.Current == '.') &&
+                    (context.Next == '.'))
+                {
+                    context++;
+                    tokens.push_back(Token(context.MarkPosition,
+                                           context.CurrentPosition,
+                                           TokenRangeSeparator));
+
+                    // Mark it up!
+                    context++;
+                    context.Mark();
+
                     continue;
                 }
 

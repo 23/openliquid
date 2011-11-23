@@ -11,6 +11,7 @@ set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} ${GENERIC_CXX_FLAGS} -Wa
 
 # Sub projects
 add_subdirectory(lib/liquid)
+add_subdirectory(lib/tclliquid)
 
 # Include tests
 include(tests.cmake)
