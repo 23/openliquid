@@ -111,15 +111,15 @@ int main()
 
 // Evaluating null against empty
     resultA = var0->Compare(var1, ConditionalEquals);
-    Assert(resultA == false,
-           "null == empty should have been false");
+    Assert(resultA == true,
+           "null == empty should have been true");
     resultB = var1->Compare(var0, ConditionalEquals);
     Assert(resultA == resultB,
            "null == empty is inconsistent");
     Passed("null == empty");
     resultA = var0->Compare(var1, ConditionalNotEquals);
-    Assert(resultA == true,
-           "null != empty should have been true");
+    Assert(resultA == false,
+           "null != empty should have been false");
     resultB = var1->Compare(var0, ConditionalNotEquals);
     Assert(resultA == resultB,
            "null != empty is inconsistent");

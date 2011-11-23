@@ -15,6 +15,7 @@ namespace Liquid
         switch (other->GetType())
         {
         case FragmentTypeNull:
+        case FragmentTypeEmpty:
             return (op == ConditionalEquals);
 
         default:
