@@ -1,6 +1,6 @@
 #include "OutputNode.hpp"
 #include "RenderContext.hpp"
-#include "ContextualFragment.hpp"
+#include "Fragment.hpp"
 
 namespace Liquid
 {
@@ -122,7 +122,33 @@ namespace Liquid
         }
 
         // Save a reference to the base before filters are applied
-        Fragment* baseFragment = outputFragment;
+        Fragment* baseFragment = outputFragment,
+                * nextFragment;
+
+        // Run through each filter
+        std::size_t filterIndex = 0;
+        while (filterIndex < this->_filters.size())
+        {
+            // Try to apply the filter
+            if (!this->_filters[filterIndex]->TryApply(outputFragment,
+                                                       nextFragment,
+                                                       context))
+            {
+                if (outputFragment != baseFragment)
+                    delete outputFragment;
+
+                return false;
+            }
+
+            // Check the next fragment and swap them
+            if ((nextFragment != outputFragment) &&
+                (outputFragment != baseFragment))
+                delete outputFragment;
+
+            outputFragment = nextFragment;
+            
+            filterIndex++;
+        }
 
         // Output the value
         context.Result << outputFragment->ToString();
@@ -130,6 +156,70 @@ namespace Liquid
         // Delete the output fragment if it isn't the base fragment
         if (outputFragment != baseFragment)
             delete outputFragment;
+
+        return true;
+    }
+
+    OutputFilter::OutputFilter(Token* filterToken)
+        :   _name(filterToken->Value),
+            _nameLineBegin(filterToken->LineBegin),
+            _nameLineEnd(filterToken->LineEnd),
+            _nameCharacterBegin(filterToken->CharacterBegin),
+            _nameCharacterEnd(filterToken->CharacterEnd)
+    {
+        
+    }
+
+    OutputFilter::~OutputFilter()
+    {
+        std::size_t index = this->_arguments.size();
+        while (index--)
+            delete this->_arguments[index];
+    }
+
+    bool OutputFilter::TryApply(Fragment*& input,
+                                Fragment*& output,
+                                RenderContext& context)
+    {
+        // Try to resolve the filter
+        FilterFunction filterFunction = context.Strain.ResolveFilterFunction(this->_name);
+
+        if (filterFunction == NULL)
+        {
+            context.Error.LineBegin = this->_nameLineBegin;
+            context.Error.LineEnd = this->_nameLineEnd;
+            context.Error.CharacterBegin = this->_nameCharacterBegin;
+            context.Error.CharacterEnd = this->_nameCharacterEnd;
+
+            context.Error.Description = "filter not found: " + this->_name;
+
+            return false;
+        }
+
+        // Resolve the arguments
+        std::vector<Fragment*> arguments;
+        Fragment* argument;
+        NullFragment nullFragment;
+
+        std::size_t index = 0;
+        while (index < this->_arguments.size())
+        {
+            argument = this->_arguments[index];
+
+            if (argument->GetType() == FragmentTypeContextual)
+                argument = reinterpret_cast<ContextualFragment*>(argument)->Resolve(context);
+
+            if (argument == NULL)
+                argument = &nullFragment;
+            
+            arguments.push_back(argument);
+            
+            index++;
+        }
+
+        // Call the function
+        output = (*filterFunction)(input,
+                                   arguments);
 
         return true;
     }

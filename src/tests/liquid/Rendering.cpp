@@ -76,6 +76,8 @@ int main()
               usernames);
     
     usernames->Add(new StringFragment("Bob"));
+    usernames->Add(new StringFragment("Owen"));
+    usernames->Add(new StringFragment("Lars"));
 
     ArrayFragment* users = new ArrayFragment();
     data->Set("users",
@@ -335,6 +337,174 @@ int main()
     AssertRendering("{% if condition %} .. {% elsif condition %} .. {% else %} .. {% endif %} #4",
                     "{% if cond == 0 %}0{% elsif cond == 1 %}1{% elseif cond == 2 %}2{% else %}other{% endif %}",
                     "other");
+
+    // * Filters
+    
+    // size
+    AssertRendering("Filter: size #1",
+                    "{{ 'some string' | size }}",
+                    "11");
+    AssertRendering("Filter: size #2",
+                    "{{ users | size }}",
+                    "1");
+
+    // img_tag
+    AssertRendering("Filter: img_tag #1",
+                    "{{ 'something.gif' | img_tag }}",
+                    "<img src=\"something.gif\" alt=\"\" />");
+    AssertRendering("Filter: img_tag #2",
+                    "{{ 'something.gif' | img_tag: 'alternate' }}",
+                    "<img src=\"something.gif\" alt=\"alternate\" />");
+
+    // script_tag
+    AssertRendering("Filter: script_tag #1",
+                    "{{ 'script.js' | script_tag }}",
+                    "<script src=\"script.js\" type=\"text/javascript\"></script>");
+
+    // stylesheet_tag
+    AssertRendering("Filter: stylesheet_tag #1",
+                    "{{ 'style.css' | stylesheet_tag }}",
+                    "<link href=\"style.css\" rel=\"stylesheet\" type=\"text/javascript\" media=\"all\" />");
+
+    // plus
+    AssertRendering("Filter: plus #1",
+                    "{{ 5 | plus: 5 }}",
+                    "10");
+    AssertRendering("Filter: plus #2",
+                    "{{ 5 | plus: 5.0 }}",
+                    "10");
+    AssertRendering("Filter: plus #3",
+                    "{{ 4.5 | plus: 5.0 }}",
+                    "9.5");
+
+    // minus
+    AssertRendering("Filter: minus #1",
+                    "{{ 5 | minus: 2 }}",
+                    "3");
+    AssertRendering("Filter: minus #2",
+                    "{{ 5 | minus: 4.0 }}",
+                    "1");
+    AssertRendering("Filter: minus #3",
+                    "{{ 4.5 | minus: 5.0 }}",
+                    "-0.5");
+
+    // times
+    AssertRendering("Filter: times #1",
+                    "{{ 5 | times: 2 }}",
+                    "10");
+    AssertRendering("Filter: times #2",
+                    "{{ 5.2 | times: 2 }}",
+                    "10.4");
+    AssertRendering("Filter: times #3",
+                    "{{ 'bye' | times: 2 }}",
+                    "byebye");
+
+    // divided_by
+    AssertRendering("Filter: divided_by #1",
+                    "{{ 15 | divided_by: 3 }}",
+                    "5");
+    AssertRendering("Filter: divided_by #2",
+                    "{{ 15 | divided_by: 0 }}",
+                    "0");
+
+    // append
+    AssertRendering("Filter: append #1",
+                    "{{ 'Maroon ' | append: 5 }}",
+                    "Maroon 5");
+    AssertRendering("Filter: append + prepend + times #1",
+                    "{{ 'Maroon ' | append: 5 | prepend: ' ' | times: 3 }}",
+                    " Maroon 5 Maroon 5 Maroon 5");
+
+    // prepend
+    AssertRendering("Filter: prepend #1",
+                    "{{ ' you' | prepend: 'Hello' }}",
+                    "Hello you");
+
+    // downcase
+    AssertRendering("Filter: downcase #1",
+                    "{{ user.name | downcase }}",
+                    "bobby");
+
+    // upcase
+    AssertRendering("Filter: upcase #1",
+                    "{{ user.name | upcase }}",
+                    "BOBBY");
+
+    // capitalize
+    AssertRendering("Filter: capitalize #1",
+                    "{{ 'long live C++' | capitalize }}",
+                    "Long live C++");
+
+    // truncate
+    std::string loremIpsum = "'Now that we know who you are, I know who I am. I\\'m not a mistake! It all makes sense! In a comic, you know how you can tell who the arch-villain\\'s going to be? He\\'s the exact opposite of the hero. And most times they\\'re friends, like you and me! I should\\'ve known way back when... You know why, David? Because of the kids. They called me Mr Glass.'";
+
+    AssertRendering("Filter: truncate #1",
+                    "{{ " + loremIpsum + " | truncate }}",
+                    "Now that we know who you are, I know who I am. I'm not a mistake! It all makes sense! In a comic,...");
+    AssertRendering("Filter: truncate #2",
+                    "{{ " + loremIpsum + " | truncate: 50 }}",
+                    "Now that we know who you are, I know who I am. ...");
+    AssertRendering("Filter: truncate #3",
+                    "{{ " + loremIpsum + " | truncate: 50, '!!!' }}",
+                    "Now that we know who you are, I know who I am. !!!");
+
+    // first
+    AssertRendering("Filter: first #1",
+                    "{{ usernames | first }}",
+                    "Bob");
+
+    // last
+    AssertRendering("Filter: last #1",
+                    "{{ usernames | last }}",
+                    "Lars");
+
+    // join
+    AssertRendering("Filter: join #1",
+                    "{{ usernames | join }}",
+                    "Bob Owen Lars");
+    AssertRendering("Filter: join #2",
+                    "{{ usernames | join: ', ' }}",
+                    "Bob, Owen, Lars");
+
+    // strip_newlines
+    AssertRendering("Filter: strip_newlines #1",
+                    "{{ 'Hello\ngreat wonderous\\nworld' | strip_newlines }}",
+                    "Hello great wonderous world");
+
+    // newline_to_br
+    AssertRendering("Filter: newline_to_br #1",
+                    "{{ 'Hello\ngreat wonderous\\nworld' | newline_to_br }}",
+                    "Hello<br />\ngreat wonderous<br />\nworld");
+
+    // replace
+    AssertRendering("Filter: replace #1",
+                    "{{ 'We do not fucking condole fucking profanity' | replace: 'fucking', 'bleeping' }}",
+                    "We do not bleeping condole bleeping profanity");
+
+    // replace_first
+    AssertRendering("Filter: replace_first #1",
+                    "{{ 'We do not fucking condole fucking profanity' | replace_first: 'fucking', 'bleeping' }}",
+                    "We do not bleeping condole fucking profanity");
+
+    // remove
+    AssertRendering("Filter: remove #1",
+                    "{{ 'We do not fucking condole fucking profanity' | remove: 'fucking ' }}",
+                    "We do not condole profanity");
+
+    // remove_first
+    AssertRendering("Filter: remove_first #1",
+                    "{{ 'We do not fucking condole fucking profanity' | remove_first: 'fucking ' }}",
+                    "We do not condole fucking profanity");
+
+    // strip_html
+    AssertRendering("Filter: strip_html #1",
+                    "{{ '<html tends=\"to fuck things up\">We have solved that <b>forever!</b>' | strip_html }}",
+                    "We have solved that forever!");
+
+    // escape
+    AssertRendering("Filter: escape #1",
+                    "{{ '<html> in an escaped version is way safer' | escape }}",
+                    "&lt;html&gt; in an escaped version is way safer");
 
     // * Cleanup
     Cleanup();

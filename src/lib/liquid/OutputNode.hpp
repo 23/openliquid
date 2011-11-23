@@ -16,15 +16,11 @@ namespace Liquid
         /// Initialize a filter
 
         /// @param filterToken Token representing the filter
-        OutputFilter(Token* filterToken)
-            :   _name(filterToken->Value),
-                _nameLineBegin(filterToken->LineBegin),
-                _nameLineEnd(filterToken->LineEnd),
-                _nameCharacterBegin(filterToken->CharacterBegin),
-                _nameCharacterEnd(filterToken->CharacterEnd)
-        {
+        OutputFilter(Token* filterToken);
 
-        }
+
+        /// Dispose of a filter
+        ~OutputFilter();
 
 
         /// Add an argument to the filter
@@ -32,8 +28,18 @@ namespace Liquid
         /// @param token Token representing the argument
         void AddArgument(Token* token)
         {
-            
+            this->_arguments.push_back(Fragment::Initialize(token));
         }
+
+
+        /// Try to apply the filter
+        
+        /// @param input Input fragment
+        /// @param output Output fragment
+        /// @param context Rendering context
+        bool TryApply(Fragment*& input,
+                      Fragment*& output,
+                      RenderContext& context);
     private:
         std::string _name;
         
@@ -42,6 +48,8 @@ namespace Liquid
 
         uint32_t _nameCharacterBegin;
         uint32_t _nameCharacterEnd;
+
+        std::vector<Fragment*> _arguments;
     };
 
 

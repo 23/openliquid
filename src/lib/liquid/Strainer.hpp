@@ -1,5 +1,6 @@
 #include <string>
 #include <map>
+#include <vector>
 
 #include "Node.hpp"
 
@@ -9,12 +10,20 @@ namespace Liquid
 {
     class ParserContext;
     class Token;
+    class Fragment;
+
     typedef Node* (*TagInitializer)(Token* token,
                                     ParserContext& context);
+    typedef Fragment* (*FilterFunction)(Fragment* input,
+                                        std::vector<Fragment*>& arguments);
 
     typedef std::map<std::string, TagInitializer> StrainerTagMap;
     typedef StrainerTagMap::iterator StrainerTagIterator;
     typedef std::pair<std::string, TagInitializer> StrainerTagPair;
+
+    typedef std::map<std::string, FilterFunction> StrainerFilterMap;
+    typedef StrainerFilterMap::iterator StrainerFilterIterator;
+    typedef std::pair<std::string, FilterFunction> StrainerFilterPair;
     
     /// Strainer
 
@@ -38,13 +47,22 @@ namespace Liquid
         void RegisterTag(std::string name,
                          TagInitializer tagInitializer);
 
+        
         /// Resolve a tag initializer
 
         /// @param name Name of the tag to be resolved in lower case
         /// @returns the pointer to the tag initializer on success, otherwise NULL
         TagInitializer ResolveTagInitializer(std::string& name);
+
+
+        /// Resolve a filter function
+
+        /// @param name Name of the filter to be resolved in lower case
+        /// @returns the pointer to the filter function on success, otherwise NULL
+        FilterFunction ResolveFilterFunction(std::string& name);
     private:
         StrainerTagMap _tagHash; ///< Local tag hash map
+        StrainerFilterMap _filterHash; ///< Local filter hash map
     };
 }
 #endif
