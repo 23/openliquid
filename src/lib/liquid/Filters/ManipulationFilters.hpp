@@ -92,49 +92,6 @@ namespace Liquid
         }
 
 
-        /// truncate(input, characters = 100, end = "...")
-        
-        /// As per http://wiki.shopify.com/Truncate
-        static Fragment* Truncate(Fragment* input,
-                                  std::vector<Fragment*>& arguments)
-        {
-            std::string representation = input->ToString();
-            
-            // Parse the length to truncate to
-            std::size_t characters = 100;
-            
-            if (arguments.size() > 0)
-            {
-                Fragment* charactersFragment = arguments[0];
-                
-                if ((charactersFragment->GetType() == FragmentTypeInteger) ||
-                    (charactersFragment->GetType() == FragmentTypeFloat))
-                {
-                    int64_t charactersRaw = (charactersFragment->GetType() == FragmentTypeInteger ? 
-                                             reinterpret_cast<IntegerFragment*>(charactersFragment)->GetValue() :
-                                             int64_t(reinterpret_cast<FloatFragment*>(charactersFragment)->GetValue()));
-                    
-                    if (charactersRaw <= 0)
-                        return new StringFragment("");
-
-                    characters = charactersRaw;
-                }
-            }
-
-            // Parse the ending
-            std::string ending = "...";
-
-            if (arguments.size() > 1)
-                ending = arguments[1]->ToString();
-
-            // Cut and end!
-            if (characters < representation.length())
-                representation = representation.substr(0, characters) + ending;
-            
-            return new StringFragment(representation);
-        }
-
-
         /// first(array)
         
         /// As per http://wiki.shopify.com/First

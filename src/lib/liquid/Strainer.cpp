@@ -56,6 +56,8 @@ namespace Liquid
                                                     &StandardFilters::Capitalize));
         this->_filterHash.insert(StrainerFilterPair("truncate",
                                                     &StandardFilters::Truncate));
+        this->_filterHash.insert(StrainerFilterPair("truncatewords",
+                                                    &StandardFilters::TruncateWords));
         this->_filterHash.insert(StrainerFilterPair("first",
                                                     &StandardFilters::First));
         this->_filterHash.insert(StrainerFilterPair("last",
