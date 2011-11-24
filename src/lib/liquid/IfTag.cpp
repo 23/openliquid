@@ -27,6 +27,7 @@ namespace Liquid
         IfTag* tag = new IfTag();
         
         // Create an option for the expressions
+        tag->_tagName = tagToken->Value;
         tag->_current = new IfTagOption(tagToken->Value == "unless");
         
         // Try to parse the expression
@@ -59,7 +60,7 @@ namespace Liquid
         this->_current = NULL;
         
         // Ending of the block
-        if (token->Value == "endif")
+        if (token->Value == "end" + this->_tagName)
         {
             if (!context.TryNext(nextToken))
             {

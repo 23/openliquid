@@ -49,6 +49,7 @@ namespace Liquid
         virtual UnknownTagHandling TryHandleUnknownTag(Token* token,
                                                        ParserContext& context);
     private:
+        std::string _tagName; ///< Tag name
         IfTagOption* _current; ///< Currently parsing option
         std::vector<IfTagOption*> _options; ///< Fully parsed options
     };
