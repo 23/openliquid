@@ -5,7 +5,8 @@
 namespace Liquid
 {
     ForTag::ForTag()
-        :   _start(NULL),
+        :   _enumeration(_enumeration),
+	    _start(NULL),
             _end(NULL),
             _limit(NULL),
             _offset(NULL),
