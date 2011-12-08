@@ -59,6 +59,16 @@ run_test "{{ user.name }}" "Bob" [dict create "user" [dict create "name" "Bob"]]
 run_test "{{ users\[0\] }}" "Bob" [dict create "users" [list "Bob"]]
 run_test "{{ users\[0\].name }}" "Bob" [dict create "users" [list [dict create "name" "Bob"]]]
 
+run_test "{{ user }}" "10" [dict create "user" "10"]
+run_test "{{ user }}" "010" [dict create "user" "010"]
+run_test "{{ user }}" "3.5" [dict create "user" "3.5"]
+run_test "{{ user }}" "03.5" [dict create "user" "03.5"]
+
+run_test "{{ user | times: 2 }}" "20" [dict create "user" "10"]
+run_test "{{ user | times: 2 }}" "010010" [dict create "user" "010"]
+run_test "{{ user | times: 2 }}" "7" [dict create "user" "3.5"]
+run_test "{{ user | times: 2 }}" "03.503.5" [dict create "user" "03.5"]
+
 run_test "{{user|size}}" "3" [dict create "user" "Bob"]
 run_test "{{ user | size }}" "3" [dict create "user" "Bob"]
 

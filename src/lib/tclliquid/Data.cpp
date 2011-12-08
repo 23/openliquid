@@ -158,11 +158,11 @@ namespace TclLiquid
             return new Liquid::BooleanFragment(false);
 
         // Integer fragment?
-        if (Liquid::Expressions::IntegerFragment.FullMatch(value))
+        if (IntegerFragment.FullMatch(value))
             return new Liquid::IntegerFragment(value);
 
         // Floating point fragment?
-        if (Liquid::Expressions::FloatFragment.FullMatch(value))
+        if (FloatFragment.FullMatch(value))
             return new Liquid::FloatFragment(value);
                 
         // If nothing else, return it as a string

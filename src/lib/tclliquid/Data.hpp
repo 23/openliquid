@@ -10,6 +10,9 @@
 #define __TCLLIQUID_TCLDATA
 namespace TclLiquid
 {
+    static pcrecpp::RE IntegerFragment("([+-]?[1-9]([0-9]*))|0");
+    static pcrecpp::RE FloatFragment("[+-]?(([1-9]([0-9]*))|0)?\\.([0-9]+)");
+
     /// Static class for translating TCL data
     class Data
     {
