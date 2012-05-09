@@ -1,5 +1,6 @@
 #include "CaptureTag.hpp"
 #include "Fragment.hpp"
+#include "Expressions.hpp"
 
 namespace Liquid
 {
@@ -115,10 +116,23 @@ namespace Liquid
         // Try to execute rendering
         if (!BranchNode::TryRender(captureContext))
             return false;
-
-        // Assign the result of the capture
-        context.Data->Set(this->_targetName,
-                          new StringFragment(captureContext.Result.str()));
+        
+        // Copy the capture result into a local string for evaluation.
+        std::string result = captureContext.Result.str();
+        
+        // Check if the output can safely be represented as an integer fragment.
+        if (Expressions::IntegerFragment.FullMatch(result))
+            context.Data->Set(this->_targetName,
+                              new IntegerFragment(result));
+        // Check if the output can safely be represented as a floating point 
+        // fragment.
+        else if (Expressions::FloatFragment.FullMatch(result))
+            context.Data->Set(this->_targetName,
+                              new FloatFragment(result));
+        // Default to assigning the result as a string.
+        else
+            context.Data->Set(this->_targetName,
+                              new StringFragment(result));
 
         // Rendering done
         return true;
