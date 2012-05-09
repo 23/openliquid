@@ -166,6 +166,9 @@ run_test "{% assign myVar = 5.5 %}{{ myVar }}" "5.5" [dict create]
 
 run_test "{% capture myContent %}Good 'old content!{% endcapture %}Before {{ myContent }}" "Before Good 'old content!" [dict create]
 
+run_test "{% capture var %}156{% endcapture %}{{ var | plus: 5 }}" "161" [dict create]
+run_test "{% capture var %}156.6{% endcapture %}{{ var | plus: 5 }}" "161.6" [dict create]
+
 run_test "{% case testVar %}{% when 1 %} One!{% when 2 %} Two!{%when 'test'%} Test!{%else%} Got me{%endcase%}" " One!" [dict create "testVar" 1]
 run_test "{% case testVar %}{% when 1 %} One!{% when 2 %} Two!{%when 'test'%} Test!{%else%} Got me{%endcase%}" " Two!" [dict create "testVar" 2]
 run_test "{% case testVar %}{% when 1 %} One!{% when 2 %} Two!{%when 'test'%} Test!{%else%} Got me{%endcase%}" " Test!" [dict create "testVar" "test"]
