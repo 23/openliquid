@@ -1,5 +1,4 @@
 #include "Fragment.hpp"
-
 #define TARGET_TCL
 
 namespace Liquid
@@ -55,6 +54,13 @@ namespace Liquid
             
         case FragmentTypeString:
             {
+                // Special case for contains
+                if (op == ConditionalContains)
+                {
+                    std::string otherval = reinterpret_cast<StringFragment*>(other)->_value;
+                    return (this->_value.find(otherval)!=std::string::npos)                    
+                }
+
                 int comparison = this->_value.compare(reinterpret_cast<StringFragment*>(other)->_value);
                 
                 switch (op)

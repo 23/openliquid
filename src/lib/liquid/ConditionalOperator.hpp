@@ -23,6 +23,9 @@ namespace Liquid
         /// <=
         ConditionalLessThanOrEquals,
 
+        /// ~= (A contains B, B is a subset of A)
+        ConditionalContains
+
         /// Implicit, ie. LHS evaluation only
         ConditionalImplicit
     };

@@ -72,7 +72,7 @@ namespace Liquid
 /*      p        q        r        s        t        u        v        w  */
         0,       0,       0,       0,       0,       0,       0,       0,
 /*      x        y        z        {        |        }        ~       del */
-        0,       0,       0,       0,       0,       0,       0,       0,
+        0,       0,       0,       0,       0,       0,       1,       0,
     };
 
     /// Table of whitespace characters

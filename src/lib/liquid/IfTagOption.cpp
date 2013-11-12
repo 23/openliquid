@@ -82,6 +82,8 @@ namespace Liquid
                     conditionalOperator = ConditionalGreaterThanOrEquals;
                 else if (token->Value == "<=")
                     conditionalOperator = ConditionalLessThanOrEquals;
+                else if (token->Value == "~=")
+                    conditionalOperator = ConditionalContains
                 else
                     return context.Error.Set(token,
                                              "invalid expression operator: " + token->Value);
