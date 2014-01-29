@@ -50,10 +50,11 @@ namespace TclLiquid
                                 stringLength);
 
             // Parse depending on the value type
-            if ((value->typePtr != NULL) &&
-                (strcmp(value->typePtr->name,
-                        "list") == 0))
-            {
+            if (
+                ((value->typePtr == NULL) && keyName == "tags")
+                ||
+                ((value->typePtr != NULL) && (strcmp(value->typePtr->name, "list") == 0))
+                ) {
                 hash->Set(keyName,
                           ParseTclList(interp,
                                        value));
