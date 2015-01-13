@@ -481,6 +481,14 @@ int main()
                     "{{ 'We do not fucking condole fucking profanity' | replace: 'fucking', 'bleeping' }}",
                     "We do not bleeping condole bleeping profanity");
 
+    AssertRendering("Filter: replace #2",
+                    "{{ 'SSSSSSSS' | replace: 'S', 'A' }}",
+                    "AAAAAAAA");
+
+    AssertRendering("Filter: replace #3",
+                    "{{ 'SSSSSSSS' | replace: 'S', 'S' }}",
+                    "SSSSSSSS");
+
     // replace_first
     AssertRendering("Filter: replace_first #1",
                     "{{ 'We do not fucking condole fucking profanity' | replace_first: 'fucking', 'bleeping' }}",

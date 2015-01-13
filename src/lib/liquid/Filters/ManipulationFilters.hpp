@@ -248,12 +248,14 @@ namespace Liquid
                                    ""),
                         result = input->ToString();
 
-            std::size_t position;
-            while ((position = result.find(search)) != std::string::npos)
+            std::size_t position = 0;
+            while ((position = result.find(search,
+                                           position)) != std::string::npos)
             {
                 result.replace(position,
                                search.size(),
                                replace);
+                position += replace.size();
             }
 
             return new StringFragment(result);
