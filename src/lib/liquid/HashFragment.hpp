@@ -114,6 +114,9 @@ namespace Liquid
 
             return result;
         }
+
+
+        virtual std::string ToDebugString();
     private:
         HashFragmentMap _map; ///< Hash map
     };

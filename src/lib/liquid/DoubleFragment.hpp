@@ -90,6 +90,9 @@ namespace Liquid
         {
             return new FloatFragment(this->_value);
         }
+
+
+        virtual std::string ToDebugString();
     private:
         double _value; ///< Value of the floating point variable
     };

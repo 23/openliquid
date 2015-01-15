@@ -108,6 +108,9 @@ namespace Liquid
         {
             throw;
         }
+
+
+        virtual std::string ToDebugString();
     private:
         std::vector<ContextualFragmentPath> _paths; ///< Path of the variable
     };

@@ -57,6 +57,9 @@ namespace Liquid
         {
             return new NullFragment();
         }
+
+
+        virtual std::string ToDebugString();
     };
 }
 #endif

@@ -406,7 +406,7 @@ namespace Liquid
         // * Rendering
 
         // Construct a forloop variable and the identifying variables
-        HashFragment* forloopVariable = new HashFragment();
+        HashFragment forloopVariable;
 
         IntegerFragment* forloopLength = new IntegerFragment(start > end ?
                                                              start - end + 1 : 
@@ -423,19 +423,19 @@ namespace Liquid
         
         
         // Assign each of the variables to the forloop hash
-        forloopVariable->Set("length", forloopLength);
-        forloopVariable->Set("index", forloopIndex);
-        forloopVariable->Set("index0", forloopIndex0);
-        forloopVariable->Set("rindex", forloopRIndex);
-        forloopVariable->Set("rindex0", forloopRIndex0);
-        forloopVariable->Set("first", forloopFirst);
-        forloopVariable->Set("last", forloopLast);
-        forloopVariable->Set("odd", forloopOdd);
-        forloopVariable->Set("even", forloopEven);
+        forloopVariable.Set("length", forloopLength);
+        forloopVariable.Set("index", forloopIndex);
+        forloopVariable.Set("index0", forloopIndex0);
+        forloopVariable.Set("rindex", forloopRIndex);
+        forloopVariable.Set("rindex0", forloopRIndex0);
+        forloopVariable.Set("first", forloopFirst);
+        forloopVariable.Set("last", forloopLast);
+        forloopVariable.Set("odd", forloopOdd);
+        forloopVariable.Set("even", forloopEven);
         
         // Swap the forloop variable into the context
         Fragment* forloopVariableOld = context.Data->Swap("forloop",
-                                                          forloopVariable);
+                                                          &forloopVariable);
         
         // Iterate through all the possible solutions
         int64_t current = start,
@@ -460,6 +460,8 @@ namespace Liquid
             oldContextualFragment = context.Data->Swap(this->_targetName,
                                                        NULL);
 
+        bool result = true;
+
         while (current != currentLimit)
         {
             // Swap in or update the contextual variable
@@ -468,7 +470,7 @@ namespace Liquid
             else
                 context.Data->Swap(this->_targetName,
                                    collection->Get(current));
-            
+
             // Update the forloop variable
             forloopIndex->SetValue(index + 1);
             forloopIndex0->SetValue(index);
@@ -478,11 +480,14 @@ namespace Liquid
             forloopLast->SetValue(rindex == 0);
             forloopOdd->SetValue(index % 2 == 0);
             forloopEven->SetValue(index % 2 == 1);
-            
+
             // Render this block
             if (!BranchNode::TryRender(context))
-                return false;
-            
+            {
+                result = false;
+                break;
+            }
+
             // Go to the next step in the iteration
             current += step;
             index++;
@@ -492,16 +497,14 @@ namespace Liquid
         // Swap the old contextual fragment back in
         context.Data->Swap(this->_targetName,
                            oldContextualFragment);
-        
+
         if (contextualFragment)
             delete contextualFragment;
-        
+
         // Get rid of the forloop variable
         context.Data->Swap("forloop",
                            forloopVariableOld);
-        
-        delete forloopVariable;
 
-        return true;
+        return result;
     }
 }

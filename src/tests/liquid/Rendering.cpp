@@ -239,6 +239,10 @@ int main()
                     "{% for x in (1 .. 5) %}{{forloop.even}} {% endfor %}",
                     "false true false true false ");
 
+    AssertRendering("{% for .. in ( .. ) %} {{ .. | filter }} {% endfor %} #1",
+                    "{% for x in (1 .. 3) %}{{ x | plus: 5 }}{% endfor %}",
+                    "678");
+
     // * If statements
     AssertRendering("{% if condition %} .. {% endif %} #1",
                     "{% if true %}TRUE{% endif %}",

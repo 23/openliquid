@@ -184,6 +184,8 @@ run_test "{% for item in (1..3) %} {{ forloop.index }} {% endfor %}" " 1  2  3 "
 run_test "{% for item in (1..3) %} {{ forloop.index0 }} {% endfor %}" " 0  1  2 " [dict create]
 run_test "{% for item in (1..3) %} {{ forloop.first }} {% endfor %}" " true  false  false " [dict create]
 run_test "{% for item in (1..3) %} {{ forloop.last }} {% endfor %}" " false  false  true " [dict create]
+run_test "{% for item in (1..3) %}{{ item | plus: 5 }}{% endfor %}" "678" [dict create]
+run_test "{% for item in (1..3) %}{{ item | horse }}{% endfor %}" "678" [dict create]
 
 run_test "{% if value == empty %}empty{% endif %}" "empty" [dict create]
 run_test "{% if value %}not empty{% else %}empty{% endif %}" "empty" [dict create]
@@ -215,5 +217,3 @@ if { [catch {set result [liquid::render $templates "test.liquid" $variables]} er
 }
 
 puts " "
-
-

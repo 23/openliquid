@@ -40,6 +40,12 @@ namespace Liquid
         virtual std::string ToString() = 0;
 
 
+        /// Get the debug representation of the fragment.
+
+        /// @returns a debug string representation of the fragment.
+        virtual std::string ToDebugString() = 0;
+
+
         /// Compare this fragment to another fragment
         
         /// @param other Other fragment to compare to

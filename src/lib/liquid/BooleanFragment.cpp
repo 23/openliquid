@@ -71,4 +71,11 @@ namespace Liquid
 
         return (op == ConditionalNotEquals);
     }
+
+    std::string BooleanFragment::ToDebugString()
+    {
+        std::stringstream ss;
+        ss << "bool(" << (_value ? "true" : "false") << ")";
+        return ss.str();
+    }
 }

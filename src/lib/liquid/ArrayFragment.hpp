@@ -21,12 +21,12 @@ namespace Liquid
         /// Dispose of an array
         virtual ~ArrayFragment()
         {
-            std::size_t index = this->_array.size();
+            std::size_t index = _array.size();
             
             while (index--)
             {
-                if (this->_array[index] != NULL)
-                    delete this->_array[index];
+                if (_array[index])
+                    delete _array[index];
             }
         }
         
@@ -107,6 +107,9 @@ namespace Liquid
 
             return result;
         }
+
+
+        virtual std::string ToDebugString();
     private:
         std::vector<Fragment*> _array; ///< Array of entries
     };

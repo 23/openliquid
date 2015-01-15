@@ -42,4 +42,9 @@ namespace Liquid
             return (op == ConditionalNotEquals);
         }
     }
+
+    std::string EmptyFragment::ToDebugString()
+    {
+        return "empty()";
+    }
 }
