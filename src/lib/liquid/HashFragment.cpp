@@ -117,4 +117,30 @@ namespace Liquid
             return (op == ConditionalNotEquals);
         }
     }
+
+    std::string HashFragment::ToDebugString()
+    {
+        std::stringstream ss;
+        ss << "{";
+
+        bool first = true;
+        HashFragmentIterator it = _map.begin();
+        while (it != _map.end())
+        {
+            if (it->second)
+            {
+                if (first)
+                    first = false;
+                else
+                    ss << ", ";
+
+                ss << it->first << ": " << it->second->ToDebugString();
+            }
+
+            ++it;
+        }
+
+        ss << "}";
+        return ss.str();
+    }
 }

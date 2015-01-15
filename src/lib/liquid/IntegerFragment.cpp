@@ -104,4 +104,11 @@ namespace Liquid
 
         return (op == ConditionalNotEquals);
     }
+
+    std::string IntegerFragment::ToDebugString()
+    {
+        std::stringstream ss;
+        ss << "integer(" << _value << ")";
+        return ss.str();
+    }
 }

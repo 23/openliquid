@@ -65,4 +65,10 @@ namespace Liquid
         
         return current;
     }
+
+
+    std::string ContextualFragment::ToDebugString()
+    {
+        return "contextual(?)";
+    }
 }

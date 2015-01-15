@@ -78,6 +78,9 @@ namespace Liquid
         {
             return new BooleanFragment(this->_value);
         }
+
+
+        virtual std::string ToDebugString();
     private:
         bool _value; ///< Value of the string
     };

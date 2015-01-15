@@ -22,4 +22,9 @@ namespace Liquid
             return (op == ConditionalNotEquals);
         }
     }
+
+    std::string NullFragment::ToDebugString()
+    {
+        return "null()";
+    }
 }

@@ -67,6 +67,9 @@ namespace Liquid
         {
             return new StringFragment(this->_value);
         }
+
+
+        virtual std::string ToDebugString();
     private:
         std::string _value; ///< Value of the string
     };

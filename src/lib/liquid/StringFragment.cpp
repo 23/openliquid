@@ -88,4 +88,11 @@ namespace Liquid
 
         return (op == ConditionalNotEquals);
     }
+
+    std::string StringFragment::ToDebugString()
+    {
+        std::stringstream ss;
+        ss << "string(" << _value << ")";
+        return ss.str();
+    }
 }

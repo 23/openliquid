@@ -92,6 +92,9 @@ namespace Liquid
         {
             return new IntegerFragment(this->_value);
         }
+
+
+        virtual std::string ToDebugString();
     private:
         int64_t _value; ///< Value of the string
     };

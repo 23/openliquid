@@ -30,4 +30,28 @@ namespace Liquid
             return (op == ConditionalNotEquals);
         }
     }
+
+    std::string ArrayFragment::ToDebugString()
+    {
+        std::stringstream ss;
+        ss << "[";
+
+        bool first = true;
+
+        for (std::size_t i = 0; i < _array.size(); ++i)
+        {
+            if (!_array[i])
+                continue;
+
+            if (first)
+                first = false;
+            else
+                ss << ", ";
+
+            ss << _array[i]->ToDebugString();
+        }
+
+        ss << "]";
+        return ss.str();
+    }
 }
