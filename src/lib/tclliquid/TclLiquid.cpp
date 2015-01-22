@@ -27,53 +27,49 @@
 static int LiquidValidate_Command(ClientData cdata, Tcl_Interp *interp, int objc, Tcl_Obj *const objv[])
 {
     // * Check the number of arguments
-    if ((objc < 2) || (objc > 3))
+    if (objc != 3)
     {
         Tcl_WrongNumArgs(interp, 1, objv, "<templates> <root template>");
         return TCL_ERROR;
     }
 
-    // * Create the template context
-/*
-    TclLiquid::Context context;
+    // Parse the data into a file system
+    TclLiquid::FileSystem fileSystem(interp,
+                                     objv[1]);
 
-    // * Get all the raw templates
-    if (!context.ParseTemplateList(interp, objv[1]))
-    {
-        Tcl_SetObjResult(interp, Tcl_NewIntObj(0));
-        Tcl_AddErrorInfo(interp, "Invalid template list");
-        Tcl_SetErrorCode(interp, LiquidParseError, NULL);
-        return TCL_ERROR;
-    }
-
-    // * Get the template name
+    // Get the template name
     const char* templateNameChars = Tcl_GetStringFromObj(objv[2], NULL);
     std::string templateName(templateNameChars);
 
-    // * Parse the template
-    try
-    {
-        context.Parse(templateName);
-    }
-    catch (std::runtime_error& exception)
-    {
-        Tcl_SetObjResult(interp, Tcl_NewIntObj(0));
-        Tcl_AddErrorInfo(interp, exception.what());
-        Tcl_SetErrorCode(interp, LiquidParseError, NULL);
+    // Try to get the template source
+    std::string templateSource;
 
-        return TCL_ERROR;
-    }
-    catch (...)
-    {
-        Tcl_SetObjResult(interp, Tcl_NewIntObj(0));
-        Tcl_AddErrorInfo(interp, "Unknown error");
-        Tcl_SetErrorCode(interp, LiquidParseError, NULL);
-        return TCL_ERROR;
-    }
-*/
+    if (!fileSystem.TryFind(templateName,
+                            templateSource))
+        LiquidError(LiquidDataError, "Template not found in template list");
 
-    // * Return a pointer to the context
-    Tcl_SetObjResult(interp, Tcl_NewIntObj(1));
+    // Try to parse the template
+    Liquid::ParserError parserError;
+    Liquid::RenderError renderError;
+    Liquid::Strainer strainer;
+
+    Liquid::Template* templ = Liquid::Template::Parse(templateSource,
+                                                      strainer,
+                                                      parserError);
+
+    if (!templ)
+    {
+        // Set the error
+        std::stringstream errorStream;
+        errorStream << parserError;
+
+        LiquidError(LiquidParseError,
+                    errorStream.str().c_str());
+    }
+
+    // Clean up the data.
+    delete templ;
+
     return TCL_OK;
 }
 
@@ -92,7 +88,7 @@ static int LiquidRender_Command(ClientData cdata, Tcl_Interp *interp, int objc, 
 
     if (data == NULL)
         LiquidError(LiquidDataError, "Invalid values passed to command");
-    
+
     // Parse the data into a file system
     TclLiquid::FileSystem fileSystem(interp,
                                      objv[1]);
@@ -132,7 +128,7 @@ static int LiquidRender_Command(ClientData cdata, Tcl_Interp *interp, int objc, 
 
     // Try to render the template
     std::string rendered;
-    
+
     if (!templ->TryRender(data,
                           renderError,
                           rendered))
@@ -148,7 +144,7 @@ static int LiquidRender_Command(ClientData cdata, Tcl_Interp *interp, int objc, 
         LiquidError(LiquidParseError,
                     errorStream.str().c_str());
     }
-    
+
     // Clean up the data
     delete templ;
     delete data;
