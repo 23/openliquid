@@ -8,7 +8,7 @@ macro (PerformTest name source)
     )
   target_link_libraries(Test${name}
       openliquid
-      pcrecpp
+      ${PCRECPP_LIBRARIES}
     )
   add_test (Test${name} Test${name})
 endmacro (PerformTest)

@@ -20,7 +20,7 @@ add_definitions(-DUSE_TCL_STUBS)
 target_link_libraries(tclliquid
         openliquid
         tclstub8.5
-        pcrecpp
+        ${PCRECPP_LIBRARIES}
 )
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/pkgIndex.tcl
