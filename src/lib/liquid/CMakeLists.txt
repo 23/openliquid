@@ -28,5 +28,5 @@ add_library(openliquid
 )
 
 target_link_libraries(openliquid
-        pcrecpp
+        ${PCRECPP_LIBRARIES}
 )
