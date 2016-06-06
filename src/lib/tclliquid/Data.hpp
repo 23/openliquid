@@ -35,6 +35,15 @@ namespace TclLiquid
         /// @returns a pointer to a hash fragment
         static Liquid::HashFragment* ParseTclDict(Tcl_Interp* interp,
                                                   Tcl_Obj* dict);
+
+
+        /// Parse a potential Tcl dictionary to a gragment.
+
+        /// @param interp Interpreter
+        /// @param dict Pointer to the TCL dictionary object
+        /// @returns a pointer to a hash fragment
+        static Liquid::Fragment* ParsePotentialTclDict(Tcl_Interp* interp,
+                                                       Tcl_Obj* dict);
         
         
         /// Parse a TCL list to an array fragment

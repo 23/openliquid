@@ -1,4 +1,4 @@
-set(TCL_INCLUDE "/usr/include/tcl8.5")
+set(TCL_INCLUDE "/usr/include/tcl8.6")
 
 if (APPLE)
   set(TCL_INCLUDE "/Library/Frameworks/Tcl.framework/Versions/8.5/Headers")
@@ -19,7 +19,7 @@ add_definitions(-DUSE_TCL_STUBS)
 
 target_link_libraries(tclliquid
         openliquid
-        tclstub8.5
+        tclstub8.6
         pcrecpp
 )
 

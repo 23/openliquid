@@ -19,6 +19,30 @@ namespace TclLiquid
                             data);
     }
 
+    Liquid::Fragment* Data::ParsePotentialTclDict(Tcl_Interp* interp,
+                                                  Tcl_Obj* dict)
+    {
+        // Tcl 8.6 is madness and passes an empty string as an empty dict.
+        Tcl_DictSearch dictSearch;
+        Tcl_Obj* key,
+               * value;
+        int done;
+
+        Tcl_DictObjFirst(interp,
+                         dict,
+                         &dictSearch,
+                         &key,
+                         &value,
+                         &done);
+
+        if (done)
+        {
+            return new Liquid::StringFragment("");
+        }
+
+        return ParseTclDict(interp, dict);
+    }
+
     Liquid::HashFragment* Data::ParseTclDict(Tcl_Interp* interp,
                                              Tcl_Obj* dict)
     {
@@ -63,8 +87,8 @@ namespace TclLiquid
                              "dict") == 0))
             {
                 hash->Set(keyName,
-                          ParseTclDict(interp,
-                                       value));
+                          ParsePotentialTclDict(interp,
+                                                value));
             }
             else
             {
@@ -125,8 +149,8 @@ namespace TclLiquid
                      (strcmp(value->typePtr->name,
                              "dict") == 0))
             {
-                array->Add(ParseTclDict(interp,
-                                        value));
+                array->Add(ParsePotentialTclDict(interp,
+                                                 value));
             }
             else
             {
