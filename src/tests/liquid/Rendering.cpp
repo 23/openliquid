@@ -74,7 +74,7 @@ int main()
     ArrayFragment* usernames = new ArrayFragment();
     data->Set("usernames",
               usernames);
-    
+
     usernames->Add(new StringFragment("Bob"));
     usernames->Add(new StringFragment("Owen"));
     usernames->Add(new StringFragment("Lars"));
@@ -82,11 +82,11 @@ int main()
     ArrayFragment* users = new ArrayFragment();
     data->Set("users",
               users);
-    
+
     HashFragment* user0 = new HashFragment();
     user0->Set("name",
                new StringFragment("Bobby"));
-    
+
     users->Add(user0);
 
     // * Plain text pass-through
@@ -175,7 +175,7 @@ int main()
     AssertRendering("{% assign .. %} #4",
                     "{% assign myVar = 'foo' %}",
                     "");
-    
+
     // * Capture tag
     AssertRendering("{% capture .. %} .. {% endcapture %} #1",
                     "{% capture myContent %}Good 'old content!{% endcapture %}Before {{ myContent }}",
@@ -187,7 +187,7 @@ int main()
     AssertRendering("{% case .. %} .. {% endcase %} #1",
                     "{% case testVar %}{% when 1 %}One!{% when 2 %}Two!{% when 'test' %}Test!{% else %}Got me{% endcase %}",
                     "One!");
-    
+
     data->Set("testVar",
               new IntegerFragment(2));
     AssertRendering("{% case .. %} .. {% endcase %} #2",
@@ -343,7 +343,7 @@ int main()
                     "other");
 
     // * Filters
-    
+
     // size
     AssertRendering("Filter: size #1",
                     "{{ 'some string' | size }}",
@@ -517,6 +517,16 @@ int main()
     AssertRendering("Filter: escape #1",
                     "{{ '<html> in an escaped version is way safer' | escape }}",
                     "&lt;html&gt; in an escaped version is way safer");
+
+    // url_encode
+    AssertRendering("Filter: url_encode #1",
+                    "{{ 'john@liquid.com' | url_encode }}",
+                    "john%40liquid.com");
+
+    // url_encode
+    AssertRendering("Filter: url_encode #2",
+                    "{{ 'Tetsuro Takara' | url_encode }}",
+                    "Tetsuro+Takara");
 
     // * Cleanup
     Cleanup();

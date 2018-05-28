@@ -1,4 +1,5 @@
 #include "HtmlFilters.hpp"
-#include "MathFilters.hpp"
 #include "ManipulationFilters.hpp"
+#include "MathFilters.hpp"
 #include "TruncateFilters.hpp"
+#include "UrlFilters.hpp"
