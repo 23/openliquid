@@ -84,6 +84,10 @@ namespace Liquid
                                                     &StandardFilters::Escape));
         this->_filterHash.insert(StrainerFilterPair("date",
                                                     &StandardFilters::Date));
+        this->_filterHash.insert(StrainerFilterPair("url_encode",
+                                                    &StandardFilters::UrlEncode));
+        this->_filterHash.insert(StrainerFilterPair("sort",
+                                                    &StandardFilters::Sort));
     }
 
     TagInitializer Strainer::ResolveTagInitializer(std::string& name)

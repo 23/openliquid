@@ -74,19 +74,35 @@ int main()
     ArrayFragment* usernames = new ArrayFragment();
     data->Set("usernames",
               usernames);
-    
+
     usernames->Add(new StringFragment("Bob"));
     usernames->Add(new StringFragment("Owen"));
     usernames->Add(new StringFragment("Lars"));
 
+    ArrayFragment* mixedArray = new ArrayFragment();
+    data->Set("mixed_array",
+              mixedArray);
+
+    mixedArray->Add(new IntegerFragment(123));
+    mixedArray->Add(new StringFragment("Owen"));
+    mixedArray->Add(new StringFragment("Lars"));
+
+    ArrayFragment* numbersArray = new ArrayFragment();
+    data->Set("numbers_array",
+              numbersArray);
+
+    numbersArray->Add(new IntegerFragment(1001));
+    numbersArray->Add(new IntegerFragment(99));
+    numbersArray->Add(new FloatFragment(98.5));
+
     ArrayFragment* users = new ArrayFragment();
     data->Set("users",
               users);
-    
+
     HashFragment* user0 = new HashFragment();
     user0->Set("name",
                new StringFragment("Bobby"));
-    
+
     users->Add(user0);
 
     // * Plain text pass-through
@@ -175,7 +191,7 @@ int main()
     AssertRendering("{% assign .. %} #4",
                     "{% assign myVar = 'foo' %}",
                     "");
-    
+
     // * Capture tag
     AssertRendering("{% capture .. %} .. {% endcapture %} #1",
                     "{% capture myContent %}Good 'old content!{% endcapture %}Before {{ myContent }}",
@@ -187,7 +203,7 @@ int main()
     AssertRendering("{% case .. %} .. {% endcase %} #1",
                     "{% case testVar %}{% when 1 %}One!{% when 2 %}Two!{% when 'test' %}Test!{% else %}Got me{% endcase %}",
                     "One!");
-    
+
     data->Set("testVar",
               new IntegerFragment(2));
     AssertRendering("{% case .. %} .. {% endcase %} #2",
@@ -343,7 +359,7 @@ int main()
                     "other");
 
     // * Filters
-    
+
     // size
     AssertRendering("Filter: size #1",
                     "{{ 'some string' | size }}",
@@ -517,6 +533,32 @@ int main()
     AssertRendering("Filter: escape #1",
                     "{{ '<html> in an escaped version is way safer' | escape }}",
                     "&lt;html&gt; in an escaped version is way safer");
+
+    // url_encode
+    AssertRendering("Filter: url_encode #1",
+                    "{{ 'john@liquid.com' | url_encode }}",
+                    "john%40liquid.com");
+
+    AssertRendering("Filter: url_encode #2",
+                    "{{ 'Tetsuro Takara' | url_encode }}",
+                    "Tetsuro+Takara");
+
+    // sort
+    AssertRendering("Filter: sort #1",
+                    "{{ 'Test' | sort | join: ',' }}",
+                    "");
+
+    AssertRendering("Filter: sort #2",
+                    "{{ mixed_array | sort | join: ',' }}",
+                    "123,Lars,Owen");
+
+    AssertRendering("Filter: sort #3",
+                    "{{ usernames | sort | join: ',' }}",
+                    "Bob,Lars,Owen");
+
+    AssertRendering("Filter: sort #4",
+                    "{{ numbers_array | sort | join: ',' }}",
+                    "98.5,99,1001");
 
     // * Cleanup
     Cleanup();
