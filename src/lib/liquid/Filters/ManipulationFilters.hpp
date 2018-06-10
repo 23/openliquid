@@ -10,7 +10,7 @@ namespace Liquid
     namespace StandardFilters
     {
         /// append(input, added)
-        
+
         /// As per http://wiki.shopify.com/Append
         static Fragment* Append(Fragment* input,
                                 std::vector<Fragment*>& arguments)
@@ -23,7 +23,7 @@ namespace Liquid
 
 
         /// prepend(input, added)
-        
+
         /// As per http://wiki.shopify.com/Prepend
         static Fragment* Prepend(Fragment* input,
                                  std::vector<Fragment*>& arguments)
@@ -36,7 +36,7 @@ namespace Liquid
 
 
         /// downcase(input)
-        
+
         /// As per http://wiki.shopify.com/Downcase
         static Fragment* Downcase(Fragment* input,
                                   std::vector<Fragment*>& arguments)
@@ -53,7 +53,7 @@ namespace Liquid
 
 
         /// upcase(input)
-        
+
         /// As per http://wiki.shopify.com/Upcase
         static Fragment* Upcase(Fragment* input,
                                 std::vector<Fragment*>& arguments)
@@ -70,7 +70,7 @@ namespace Liquid
 
 
         /// capitalize(input)
-        
+
         /// As per http://wiki.shopify.com/Capitalize
         static Fragment* Capitalize(Fragment* input,
                                     std::vector<Fragment*>& arguments)
@@ -87,91 +87,13 @@ namespace Liquid
 
                 break;
             }
-            
+
             return new StringFragment(representation);
         }
 
 
-        /// first(array)
-        
-        /// As per http://wiki.shopify.com/First
-        static Fragment* First(Fragment* input,
-                               std::vector<Fragment*>& arguments)
-        {
-            if (input->GetType() != FragmentTypeArray)
-                return new NullFragment();
-
-            ArrayFragment* array = reinterpret_cast<ArrayFragment*>(input);
-
-            if (array->Count() == 0)
-                return new NullFragment();
-
-            Fragment* toClone = array->Get(0);
-            return (toClone == NULL ?
-                    new NullFragment() : 
-                    toClone->Clone());
-        }
-
-
-        /// last(array)
-        
-        /// As per http://wiki.shopify.com/Last
-        static Fragment* Last(Fragment* input,
-                              std::vector<Fragment*>& arguments)
-        {
-            if (input->GetType() != FragmentTypeArray)
-                return new NullFragment();
-
-            ArrayFragment* array = reinterpret_cast<ArrayFragment*>(input);
-
-            if (array->Count() == 0)
-                return new NullFragment();
-
-            Fragment* toClone = array->Get(array->Count() - 1);
-            return (toClone == NULL ?
-                    new NullFragment() : 
-                    toClone->Clone());
-        }
-
-
-        /// join(input, segmenter = " ")
-        
-        /// As per http://wiki.shopify.com/Join
-        static Fragment* Join(Fragment* input,
-                              std::vector<Fragment*>& arguments)
-        {
-            // Initially check things
-            if (input->GetType() != FragmentTypeArray)
-                return new NullFragment();
-
-            ArrayFragment* array = reinterpret_cast<ArrayFragment*>(input);
-
-            if (array->Count() == 0)
-                return new StringFragment("");
-
-            // Get the segmenter
-            std::string result,
-                        segmenter = " ";
-            
-            if (arguments.size() > 0)
-                segmenter = arguments[0]->ToString();
-
-            // Produce the result
-            Fragment* toOutput;
-            for (std::size_t index = 0; index < array->Count(); index++)
-            {
-                toOutput = array->Get(index);
-
-                if (toOutput != NULL)
-                    result += (result.empty() ? std::string() : segmenter) + toOutput->ToString();
-            }
-
-            return new StringFragment(result);
-        }
-
-
         /// size(input)
-        
+
         /// As per http://wiki.shopify.com/Size
         static Fragment* Size(Fragment* input,
                               std::vector<Fragment*>& arguments)
@@ -199,7 +121,7 @@ namespace Liquid
             for (std::size_t index = 0; index < representation.length(); index++)
             {
                 current = representation[index];
-                
+
                 if ((current != '\n') &&
                     (current != '\r'))
                     result += current;
@@ -208,7 +130,7 @@ namespace Liquid
             return new StringFragment(result);
         }
 
-        
+
         /// newline_to_br(input)
 
         /// As per http://wiki.shopify.com/Newline_to_br
@@ -336,7 +258,7 @@ namespace Liquid
 
 
         /// strip_html(input)
-        
+
         /// As per http://wiki.shopify.com/Strip_html
         static Fragment* StripHtml(Fragment* input,
                                    std::vector<Fragment*>& arguments)
@@ -347,7 +269,7 @@ namespace Liquid
             char current,
                  stringWrapper = 0x00;
             bool inHtml = false;
-            
+
             for (std::size_t index = 0; index < representation.length(); index++)
             {
                 current = representation[index];
@@ -379,7 +301,7 @@ namespace Liquid
 
 
         /// escape(input)
-        
+
         /// As per http://wiki.shopify.com/Escape
         static Fragment* Escape(Fragment* input,
                                 std::vector<Fragment*>& arguments)
@@ -389,7 +311,7 @@ namespace Liquid
 
             char current;
             bool lastSpace = false;
-            
+
             for (std::size_t index = 0; index < representation.length(); index++)
             {
                 current = representation[index];
