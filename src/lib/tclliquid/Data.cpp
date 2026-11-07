@@ -40,6 +40,11 @@ namespace TclLiquid
             return new Liquid::StringFragment("");
         }
 
+        // Tcl_DictObjFirst took a reference on the dict's internal rep; a
+        // search abandoned before its end keeps that reference, and the dict
+        // with every key and value it holds is never freed.
+        Tcl_DictObjDone(&dictSearch);
+
         return ParseTclDict(interp, dict);
     }
 
