@@ -217,3 +217,44 @@ if { [catch {set result [liquid::render $templates "test.liquid" $variables]} er
 }
 
 puts " "
+
+# * Nested dicts must not leak: every nested dict value opens a dict search in
+#   Data.cpp, and an unfinished search pins the dict's internal rep for good.
+#   Render a fresh 50 KB nested dict many times and watch the process RSS
+#   (Linux only; elsewhere the check is skipped).
+proc rss_kb {} {
+    if { [catch {
+        set fd [open /proc/self/status r]
+        set status [read $fd]
+        close $fd
+        regexp {VmRSS:\s+(\d+)} $status _ kb
+    }] } {
+        return ""
+    }
+    return $kb
+}
+proc render_fresh_nested {n} {
+    set templates [list [list "test.liquid" "{{ photo.title }} {{ photo.field_1 | size }}"]]
+    for { set i 0 } { $i < $n } { incr i } {
+        set photo [dict create title "nested"]
+        for { set j 0 } { $j < 50 } { incr j } {
+            dict set photo "field_${j}" [string repeat y 1000]
+        }
+        liquid::render $templates "test.liquid" [list title "leak" photo $photo]
+    }
+}
+puts "Rendering: a fresh nested dict, 2000 times"
+set before [rss_kb]
+if { $before eq "" } {
+    puts "Status   : [set_color 33]Skipped (no /proc/self/status)[set_color 0]"
+} else {
+    render_fresh_nested 2000
+    set grown_kb [expr { [rss_kb] - $before }]
+    puts "Result   : RSS grew ${grown_kb} kB"
+    if { $grown_kb < 20000 } {
+        puts "Status   : [set_color 32]Success[set_color 0]"
+    } else {
+        puts "Status   : [set_color 31]Failure! nested dicts leak (about [expr { $grown_kb / 2000 }] kB per render)[set_color 0]"
+    }
+}
+puts " "
